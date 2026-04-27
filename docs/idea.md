@@ -75,3 +75,18 @@ En futuras versiones se podrían añadir:
 He elegido esta idea porque es una aplicación útil, clara y realista para desarrollar en esta fase. Permite aplicar React con TypeScript y Tailwind en la parte visual, y también un backend con Express para practicar rutas, controladores, servicios y comunicación mediante API.
 
 Además, es un proyecto lo bastante completo como para demostrar organización, desarrollo frontend y backend, pero sin ser excesivamente grande para el tiempo disponible.
+
+## Ampliación de la idea tras feedback
+
+Tras recibir feedback, se amplía la idea inicial para que la aplicación tenga más valor técnico y de producto.
+
+Además de registrar entrenamientos, GymLog incluirá una biblioteca de ejercicios. El usuario podrá añadir ejercicios personalizados y asociarles tags como "tren superior", "push", "pull", "pecho", "espalda" o "pierna". Estos tags permitirán filtrar y organizar mejor los ejercicios.
+
+También se añadirá un sistema de registro de RM por ejercicio. El RM representa la repetición máxima o marca máxima del usuario en un ejercicio concreto. A partir de este dato, la aplicación podrá sugerir pesos recomendados para distintos tipos de entrenamiento:
+
+- RM 100%
+- Fuerza 80%
+- Bodybuilding 60%
+- Cardio 40%
+
+Como mejora futura, si se utiliza una base de datos sincronizada como Supabase, MongoDB o Firebase, se podría crear un sistema de usuarios y amigos para comparar marcas, compartir rutinas o ver progresos. Esta parte se deja como posible evolución del proyecto para mantener una primera versión realista.
