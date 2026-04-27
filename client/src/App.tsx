@@ -4,7 +4,7 @@ import ExerciseList from "./components/ExerciseList";
 import Input from "./components/Input";
 import LoadingSpinner from "./components/LoadingSpinner";
 import WeightRecommendationCard from "./components/WeightRecommendationCard";
-import { useExercises } from "./hooks/useExercises";
+import { useGymLog } from "./context/GymLogContext";
 import { calculateWeightRecommendations } from "./utils/calculateWeights";
 
 const recommendations = calculateWeightRecommendations(100);
@@ -20,7 +20,7 @@ function App() {
     setSearch,
     setSelectedTag,
     clearFilters,
-  } = useExercises();
+  } = useGymLog();
 
   return (
     <main className="min-h-screen bg-gray-100 p-6">
