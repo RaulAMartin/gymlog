@@ -1,6 +1,7 @@
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
 
-const API_BASE_URL = "http://localhost:3000/api/v1";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1";
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${url}`, {
