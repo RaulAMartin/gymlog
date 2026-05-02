@@ -1,73 +1,174 @@
-# React + TypeScript + Vite
+# GymLog
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+GymLog es una aplicación web fullstack para registrar entrenamientos de gimnasio, gestionar una biblioteca de ejercicios y calcular recomendaciones de peso a partir del RM del usuario.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+La aplicación permite consultar y crear ejercicios, asociarles tags, filtrar ejercicios por nombre o categoría, registrar marcas RM y calcular pesos recomendados según distintos objetivos de entrenamiento.
 
-## React Compiler
+## Tecnologías utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
 
-## Expanding the ESLint configuration
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js
+- Express
+- API REST
+- CORS
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Organización y documentación
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Trello
+- GitHub
+- Markdown
+- Vercel
+- Render
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estructura del proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```txt
+gym-tracker-app/
+├── client/
+│   └── src/
+│       ├── api/
+│       ├── components/
+│       ├── context/
+│       ├── data/
+│       ├── hooks/
+│       ├── pages/
+│       ├── types/
+│       └── utils/
+├── server/
+│   ├── controllers/
+│   ├── data/
+│   ├── routes/
+│   ├── services/
+│   └── index.js
+├── docs/
+└── README.md
+Funcionalidades principales
+Biblioteca de ejercicios
+Creación de nuevos ejercicios
+Tags para clasificar ejercicios
+Búsqueda de ejercicios por nombre
+Filtro de ejercicios por tag
+Registro de RM
+Cálculo de pesos recomendados
+Navegación con React Router
+Página 404
+API REST con Express
+Cliente de API tipado en frontend
+Estados de carga, éxito y error
+Despliegue
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Frontend desplegado en Vercel:
+
+https://gymlog-sage.vercel.app/
+
+Backend/API desplegado en Render:
+
+https://gymlog-api-5yup.onrender.com
+
+Endpoint principal de la API:
+
+https://gymlog-api-5yup.onrender.com/api/v1
+Endpoints principales
+Ejercicios
+GET /api/v1/exercises
+POST /api/v1/exercises
+GET /api/v1/exercises/:id
+PUT /api/v1/exercises/:id
+DELETE /api/v1/exercises/:id
+Sesiones
+GET /api/v1/sessions
+POST /api/v1/sessions
+GET /api/v1/sessions/:id
+PUT /api/v1/sessions/:id
+DELETE /api/v1/sessions/:id
+RM
+GET /api/v1/rms
+POST /api/v1/rms
+GET /api/v1/rms/:id
+DELETE /api/v1/rms/:id
+Instalación en local
+
+Clonar el repositorio:
+
+git clone URL_DEL_REPOSITORIO
+cd gym-tracker-app
+
+Instalar y ejecutar backend:
+
+cd server
+npm install
+npm run dev
+
+El backend se ejecutará en:
+
+http://localhost:3000
+
+Instalar y ejecutar frontend en otra terminal:
+
+cd client
+npm install
+npm run dev
+
+El frontend se ejecutará normalmente en:
+
+http://localhost:5173
+
+Si el puerto está ocupado, Vite puede usar otro, por ejemplo:
+
+http://localhost:5174
+Variable de entorno del frontend
+
+En producción se utiliza la variable:
+
+VITE_API_BASE_URL
+
+Con el valor:
+
+https://gymlog-api-5yup.onrender.com/api/v1
+Documentación
+
+La documentación del proyecto está en la carpeta docs/.
+
+Incluye:
+
+investigación Agile
+idea del proyecto
+gestión del proyecto
+arquitectura
+componentes
+hooks
+context
+rutas
+formularios
+API
+cliente de API
+testing
+despliegue
+Limitaciones actuales
+
+Actualmente el backend guarda los datos en memoria. Esto significa que los datos nuevos pueden perderse si el servidor se reinicia.
+
+Como mejora futura se podría añadir una base de datos real como Supabase, MongoDB o Firebase.
+
+Mejoras futuras
+Autenticación de usuarios
+Base de datos real
+Sistema de amigos
+Comparación de marcas
+Rutinas compartidas
+Gráficos avanzados de progreso
+Integración con una API externa de ejercicios
+Autor
+
+Proyecto realizado como práctica del grado de Desarrollo de Aplicaciones Multiplataforma por Raúl Antonio Martín Amores
