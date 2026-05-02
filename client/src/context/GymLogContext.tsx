@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { mockExercises } from "../data/mockExercises";
+import { createExercise, getExercises } from "../api/client";
 import type { Exercise } from "../types/gym";
 
 type GymLogContextValue = {
@@ -20,7 +20,7 @@ type GymLogContextValue = {
   setSearch: (value: string) => void;
   setSelectedTag: (value: string) => void;
   clearFilters: () => void;
-  addExercise: (exercise: Omit<Exercise, "id">) => void;
+  addExercise: (exercise: Omit<Exercise, "id">) => Promise<void>;
 };
 
 type GymLogProviderProps = {
@@ -37,17 +37,26 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   const [error, setError] = useState("");
 
   useEffect(() => {
+  async function loadExercises() {
     try {
       setIsLoading(true);
+      setError("");
 
-      setTimeout(() => {
-        setExercises(mockExercises);
-        setIsLoading(false);
-      }, 500);
-    } catch {
-      setError("No se pudieron cargar los ejercicios.");
+      const data = await getExercises();
+
+      setExercises(data);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudieron cargar los ejercicios."
+      );
+    } finally {
       setIsLoading(false);
     }
+  }
+
+  loadExercises();
   }, []);
 
   const availableTags = useMemo(() => {
@@ -74,13 +83,20 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSelectedTag("");
   }, []);
 
-  const addExercise = useCallback((exercise: Omit<Exercise, "id">) => {
-  const newExercise: Exercise = {
-    id: crypto.randomUUID(),
-    ...exercise,
-  };
+  const addExercise = useCallback(async (exercise: Omit<Exercise, "id">) => {
+  try {
+    setError("");
 
-  setExercises((currentExercises) => [...currentExercises, newExercise]);
+    const newExercise = await createExercise(exercise);
+
+    setExercises((currentExercises) => [...currentExercises, newExercise]);
+  } catch (error) {
+    setError(
+      error instanceof Error
+        ? error.message
+        : "No se pudo crear el ejercicio."
+    );
+  }
   }, []);
 
   const value: GymLogContextValue = {

@@ -12,7 +12,7 @@ function ExerciseForm() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -38,7 +38,7 @@ function ExerciseForm() {
       .map((tag) => tag.trim().toLowerCase())
       .filter(Boolean);
 
-    addExercise({
+    await addExercise({
       name: name.trim(),
       muscleGroup: muscleGroup.trim(),
       tags: formattedTags,
