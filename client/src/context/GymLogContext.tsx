@@ -20,6 +20,7 @@ type GymLogContextValue = {
   setSearch: (value: string) => void;
   setSelectedTag: (value: string) => void;
   clearFilters: () => void;
+  addExercise: (exercise: Omit<Exercise, "id">) => void;
 };
 
 type GymLogProviderProps = {
@@ -73,6 +74,15 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSelectedTag("");
   }, []);
 
+  const addExercise = useCallback((exercise: Omit<Exercise, "id">) => {
+  const newExercise: Exercise = {
+    id: crypto.randomUUID(),
+    ...exercise,
+  };
+
+  setExercises((currentExercises) => [...currentExercises, newExercise]);
+  }, []);
+
   const value: GymLogContextValue = {
     exercises,
     filteredExercises,
@@ -84,6 +94,7 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSearch,
     setSelectedTag,
     clearFilters,
+    addExercise,
   };
 
   return (
