@@ -18,9 +18,12 @@ export function useSessions() {
 
   const totalSets = useMemo(() => {
     return sessions.reduce((sessionTotal, session) => {
-      const setsInSession = session.exercises.reduce((exerciseTotal, exercise) => {
-        return exerciseTotal + exercise.sets.length;
-      }, 0);
+      const setsInSession = session.exercises.reduce(
+        (exerciseTotal, exercise) => {
+          return exerciseTotal + exercise.sets.length;
+        },
+        0
+      );
 
       return sessionTotal + setsInSession;
     }, 0);

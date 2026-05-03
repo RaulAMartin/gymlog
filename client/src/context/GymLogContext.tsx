@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { createExercise, getExercises } from "../api/client";
-import type { Exercise } from "../types/gym";
+import type { Exercise, TrainingSession } from "../types/gym";
 
 type GymLogContextValue = {
   exercises: Exercise[];
@@ -21,6 +21,8 @@ type GymLogContextValue = {
   setSelectedTag: (value: string) => void;
   clearFilters: () => void;
   addExercise: (exercise: Omit<Exercise, "id">) => Promise<void>;
+  sessions: TrainingSession[];
+  addSession: (session: Omit<TrainingSession, "id">) => void;
 };
 
 type GymLogProviderProps = {
@@ -31,6 +33,7 @@ const GymLogContext = createContext<GymLogContextValue | undefined>(undefined);
 
 export function GymLogProvider({ children }: GymLogProviderProps) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [sessions, setSessions] = useState<TrainingSession[]>([]);
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -99,8 +102,18 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   }
   }, []);
 
+  const addSession = useCallback((session: Omit<TrainingSession, "id">) => {
+  const newSession: TrainingSession = {
+    id: crypto.randomUUID(),
+    ...session,
+  };
+
+  setSessions((currentSessions) => [newSession, ...currentSessions]);
+  }, []);
+
   const value: GymLogContextValue = {
     exercises,
+    sessions,
     filteredExercises,
     availableTags,
     search,
@@ -111,6 +124,7 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSelectedTag,
     clearFilters,
     addExercise,
+    addSession,
   };
 
   return (
