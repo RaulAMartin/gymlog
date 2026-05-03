@@ -6,7 +6,12 @@ import {
   useMemo,
   useState,
 } from "react";
-import { createExercise, getExercises } from "../api/client";
+import {
+  createExercise,
+  createSession,
+  getExercises,
+  getSessions,
+} from "../api/client";
 import type { Exercise, TrainingSession } from "../types/gym";
 
 type GymLogContextValue = {
@@ -22,7 +27,7 @@ type GymLogContextValue = {
   clearFilters: () => void;
   addExercise: (exercise: Omit<Exercise, "id">) => Promise<void>;
   sessions: TrainingSession[];
-  addSession: (session: Omit<TrainingSession, "id">) => void;
+  addSession: (session: Omit<TrainingSession, "id">) => Promise<void>;
 };
 
 type GymLogProviderProps = {
@@ -40,26 +45,30 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-  async function loadExercises() {
+  async function loadInitialData() {
     try {
       setIsLoading(true);
       setError("");
 
-      const data = await getExercises();
+      const [exercisesData, sessionsData] = await Promise.all([
+        getExercises(),
+        getSessions(),
+      ]);
 
-      setExercises(data);
+      setExercises(exercisesData);
+      setSessions(sessionsData);
     } catch (error) {
       setError(
         error instanceof Error
           ? error.message
-          : "No se pudieron cargar los ejercicios."
+          : "No se pudieron cargar los datos."
       );
     } finally {
       setIsLoading(false);
     }
   }
 
-  loadExercises();
+  loadInitialData();
   }, []);
 
   const availableTags = useMemo(() => {
@@ -102,13 +111,20 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   }
   }, []);
 
-  const addSession = useCallback((session: Omit<TrainingSession, "id">) => {
-  const newSession: TrainingSession = {
-    id: crypto.randomUUID(),
-    ...session,
-  };
+  const addSession = useCallback(async (session: Omit<TrainingSession, "id">) => {
+  try {
+    setError("");
 
-  setSessions((currentSessions) => [newSession, ...currentSessions]);
+    const newSession = await createSession(session);
+
+    setSessions((currentSessions) => [newSession, ...currentSessions]);
+  } catch (error) {
+    setError(
+      error instanceof Error
+        ? error.message
+        : "No se pudo guardar la sesión."
+    );
+  }
   }, []);
 
   const value: GymLogContextValue = {

@@ -18,7 +18,7 @@ function SessionForm() {
     (exercise) => exercise.id === selectedExerciseId
   );
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -47,22 +47,22 @@ function SessionForm() {
       return;
     }
 
-    addSession({
-      date,
-      notes,
-      exercises: [
+    await addSession({
+  date,
+  notes,
+  exercises: [
+    {
+      exerciseId: selectedExercise.id,
+      exerciseName: selectedExercise.name,
+      sets: [
         {
-          exerciseId: selectedExercise.id,
-          exerciseName: selectedExercise.name,
-          sets: [
-            {
-              reps: numericReps,
-              weight: numericWeight,
-            },
-          ],
+          reps: numericReps,
+          weight: numericWeight,
         },
       ],
-    });
+    },
+  ],
+});
 
     setDate("");
     setSelectedExerciseId("");
