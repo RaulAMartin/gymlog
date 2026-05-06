@@ -1,3 +1,10 @@
+export function updateSession(id: string, session: Partial<TrainingSession>) {
+  return request<TrainingSession>(`/sessions/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(session),
+  });
+}
+
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
 
 const API_BASE_URL =

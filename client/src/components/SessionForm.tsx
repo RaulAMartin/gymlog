@@ -9,6 +9,7 @@ function SessionForm() {
   const [date, setDate] = useState("");
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [reps, setReps] = useState("");
+  const [series, setSeries] = useState("");
   const [weight, setWeight] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
@@ -36,6 +37,7 @@ function SessionForm() {
 
     const numericReps = Number(reps);
     const numericWeight = Number(weight);
+    const numericSeries = Number(series);
 
     if (!reps || Number.isNaN(numericReps) || numericReps <= 0) {
       setError("Las repeticiones deben ser un número mayor que 0.");
@@ -47,6 +49,11 @@ function SessionForm() {
       return;
     }
 
+    if (!series || Number.isNaN(numericSeries) || numericSeries <= 0) {
+     setError("El número de series debe ser mayor que 0.");
+      return;
+    }
+
     await addSession({
   date,
   notes,
@@ -54,12 +61,10 @@ function SessionForm() {
     {
       exerciseId: selectedExercise.id,
       exerciseName: selectedExercise.name,
-      sets: [
-        {
-          reps: numericReps,
-          weight: numericWeight,
-        },
-      ],
+     sets: Array.from({ length: numericSeries }, () => ({
+  reps: numericReps,
+  weight: numericWeight,
+})),
     },
   ],
 });
@@ -67,6 +72,7 @@ function SessionForm() {
     setDate("");
     setSelectedExerciseId("");
     setReps("");
+    setSeries("");
     setWeight("");
     setNotes("");
     setSuccessMessage("Sesión guardada correctamente.");
@@ -122,6 +128,14 @@ function SessionForm() {
           value={weight}
           placeholder="Ej: 60"
           onChange={setWeight}
+        />
+
+        <Input
+            label="Número de series"
+            type="number"
+             value={series}
+             placeholder="Ej: 3"
+             onChange={setSeries}
         />
       </div>
 

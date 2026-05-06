@@ -131,3 +131,20 @@ Conclusión
 La capa de red permite separar la lógica de comunicación con la API del resto de la aplicación.
 
 Esto mejora la organización, facilita el mantenimiento y permite trabajar con datos tipados entre frontend y backend.
+
+## Conexión de sesiones con la API
+
+También se han conectado las sesiones de entrenamiento con el backend.
+
+El frontend utiliza:
+
+```ts
+getSessions()
+createSession(session)
+
+Estas funciones llaman a los endpoints:
+
+GET /api/v1/sessions
+POST /api/v1/sessions
+
+Gracias a esto, las sesiones creadas desde la página Nueva sesión se guardan en la API y después se pueden consultar desde Historial y Dashboard.

@@ -2,9 +2,10 @@ import type { TrainingSession } from "../types/gym";
 
 type SessionCardProps = {
   session: TrainingSession;
+  onRepeat?: () => void;
 };
 
-function SessionCard({ session }: SessionCardProps) {
+function SessionCard({ session, onRepeat }: SessionCardProps) {
   return (
     <article className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -22,6 +23,16 @@ function SessionCard({ session }: SessionCardProps) {
           {session.exercises.length} ejercicio/s
         </span>
       </div>
+
+      {onRepeat && (
+    <button
+     type="button"
+      onClick={onRepeat}
+     className="rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
+      >
+    Repetir sesión hoy
+     </button>
+    )}
 
       <div className="mt-4 space-y-3">
         {session.exercises.map((exercise) => (

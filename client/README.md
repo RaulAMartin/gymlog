@@ -172,3 +172,9 @@ Integración con una API externa de ejercicios
 Autor
 
 Proyecto realizado como práctica del grado de Desarrollo de Aplicaciones Multiplataforma por Raúl Antonio Martín Amores
+
+Trello: https://trello.com/invite/b/69edf0b2980464ab42ede459/ATTI0671917e8391d0fc3172fb0b6bb98d7d0F411BC4/gymlog-desarrollo
+
+Vercel: https://gymlog-sage.vercel.app/
+
+Render: https://gymlog-api-5yup.onrender.com

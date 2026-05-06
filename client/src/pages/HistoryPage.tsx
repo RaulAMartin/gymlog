@@ -1,8 +1,24 @@
 import SessionCard from "../components/SessionCard";
 import { useSessions } from "../hooks/useSessions";
+import { useGymLog } from "../context/GymLogContext";
 
 function HistoryPage() {
   const { sessions } = useSessions();
+  const { addSession } = useGymLog();
+
+  async function repeatSession(sessionId: string) {
+  const sessionToRepeat = sessions.find((session) => session.id === sessionId);
+
+  if (!sessionToRepeat) {
+    return;
+  }
+
+  await addSession({
+    date: new Date().toISOString().split("T")[0],
+    notes: `Sesión repetida de ${sessionToRepeat.date}`,
+    exercises: sessionToRepeat.exercises,
+  });
+}
 
   return (
     <section>
@@ -21,7 +37,11 @@ function HistoryPage() {
         ) : (
           <div className="space-y-4">
             {sessions.map((session) => (
-              <SessionCard key={session.id} session={session} />
+              <SessionCard
+                key={session.id}
+                session={session}
+                onRepeat={() => repeatSession(session.id)}
+              />
             ))}
           </div>
         )}

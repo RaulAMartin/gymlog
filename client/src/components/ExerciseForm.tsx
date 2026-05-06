@@ -2,15 +2,32 @@ import { useState } from "react";
 import { useGymLog } from "../context/GymLogContext";
 import Button from "./Button";
 import Input from "./Input";
+import { predefinedExerciseTags } from "../data/exerciseTags";
 
 function ExerciseForm() {
   const { addExercise } = useGymLog();
 
   const [name, setName] = useState("");
   const [muscleGroup, setMuscleGroup] = useState("");
-  const [tags, setTags] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  function toggleTag(tag: string) {
+  if (selectedTags.includes(tag)) {
+    setSelectedTags((currentTags) =>
+      currentTags.filter((currentTag) => currentTag !== tag)
+    );
+    return;
+  }
+
+  if (selectedTags.length >= 3) {
+    setError("Solo puedes seleccionar entre 1 y 3 tags.");
+    return;
+  }
+
+  setSelectedTags((currentTags) => [...currentTags, tag]);
+}
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,25 +45,20 @@ function ExerciseForm() {
       return;
     }
 
-    if (!tags.trim()) {
-      setError("Debes añadir al menos un tag.");
-      return;
+    if (selectedTags.length === 0) {
+    setError("Debes seleccionar al menos un tag.");
+    return;
     }
-
-    const formattedTags = tags
-      .split(",")
-      .map((tag) => tag.trim().toLowerCase())
-      .filter(Boolean);
 
     await addExercise({
       name: name.trim(),
       muscleGroup: muscleGroup.trim(),
-      tags: formattedTags,
+      tags: selectedTags,
     });
 
     setName("");
     setMuscleGroup("");
-    setTags("");
+    setSelectedTags([]);
     setSuccessMessage("Ejercicio añadido correctamente.");
   }
 
@@ -73,14 +85,34 @@ function ExerciseForm() {
           placeholder="Ej: Pecho"
           onChange={setMuscleGroup}
         />
-
-        <Input
-          label="Tags separados por coma"
-          value={tags}
-          placeholder="Ej: tren superior, push, pecho"
-          onChange={setTags}
-        />
       </div>
+
+      <div className="mt-4">
+  <p className="text-sm font-medium text-gray-700">
+    Tags del ejercicio, selecciona entre 1 y 3
+  </p>
+
+  <div className="mt-2 flex flex-wrap gap-2">
+    {predefinedExerciseTags.map((tag) => {
+      const isSelected = selectedTags.includes(tag);
+
+      return (
+        <button
+          key={tag}
+          type="button"
+          onClick={() => toggleTag(tag)}
+          className={`rounded-full px-3 py-1 text-sm font-medium ${
+            isSelected
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          {tag}
+        </button>
+      );
+    })}
+  </div>
+</div>
 
       {error && (
         <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800">

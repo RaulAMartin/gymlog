@@ -6,7 +6,7 @@ import Input from "./Input";
 import WeightRecommendationCard from "./WeightRecommendationCard";
 
 function RMForm() {
-  const { exercises } = useGymLog();
+  const { exercises, addOrUpdateRm } = useGymLog();
 
   const [selectedExerciseId, setSelectedExerciseId] = useState("");
   const [rm, setRm] = useState("");
@@ -26,7 +26,7 @@ function RMForm() {
     return calculateWeightRecommendations(savedRm);
   }, [savedRm]);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setError("");
@@ -54,6 +54,17 @@ function RMForm() {
       setError("El RM debe ser mayor que 0.");
       return;
     }
+
+    if (!selectedExercise) {
+    setError("El ejercicio seleccionado no existe.");
+    return;
+    }
+
+    await addOrUpdateRm({
+    exerciseId: selectedExercise.id,
+    exerciseName: selectedExercise.name,
+    rm: numericRm,
+  });
 
     setSavedRm(numericRm);
     setSuccessMessage(
