@@ -1,10 +1,3 @@
-export function updateSession(id: string, session: Partial<TrainingSession>) {
-  return request<TrainingSession>(`/sessions/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(session),
-  });
-}
-
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
 
 const API_BASE_URL =
@@ -62,6 +55,19 @@ export function createSession(session: Omit<TrainingSession, "id">) {
   return request<TrainingSession>("/sessions", {
     method: "POST",
     body: JSON.stringify(session),
+  });
+}
+
+export function updateSession(id: string, session: Partial<TrainingSession>) {
+  return request<TrainingSession>(`/sessions/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(session),
+  });
+}
+
+export function deleteSession(id: string) {
+  return request<{ message: string }>(`/sessions/${id}`, {
+    method: "DELETE",
   });
 }
 

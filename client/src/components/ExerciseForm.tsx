@@ -13,20 +13,18 @@ function ExerciseForm() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  function toggleTag(tag: string) {
-  if (selectedTags.includes(tag)) {
-    setSelectedTags((currentTags) =>
-      currentTags.filter((currentTag) => currentTag !== tag)
-    );
-    return;
-  }
+  function handleTagsChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  const selectedOptions = Array.from(event.target.selectedOptions).map(
+    (option) => option.value
+  );
 
-  if (selectedTags.length >= 3) {
+  if (selectedOptions.length > 3) {
     setError("Solo puedes seleccionar entre 1 y 3 tags.");
     return;
   }
 
-  setSelectedTags((currentTags) => [...currentTags, tag]);
+  setError("");
+  setSelectedTags(selectedOptions);
 }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -71,48 +69,46 @@ function ExerciseForm() {
         Añadir ejercicio
       </h2>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Input
-          label="Nombre"
-          value={name}
-          placeholder="Ej: Press banca"
-          onChange={setName}
-        />
+     <div className="grid gap-4 md:grid-cols-3">
+  <Input
+    label="Nombre"
+    value={name}
+    placeholder="Ej: Press banca"
+    onChange={setName}
+  />
 
-        <Input
-          label="Grupo muscular"
-          value={muscleGroup}
-          placeholder="Ej: Pecho"
-          onChange={setMuscleGroup}
-        />
-      </div>
+  <Input
+    label="Grupo muscular"
+    value={muscleGroup}
+    placeholder="Ej: Pecho"
+    onChange={setMuscleGroup}
+  />
 
-      <div className="mt-4">
-  <p className="text-sm font-medium text-gray-700">
-    Tags del ejercicio, selecciona entre 1 y 3
-  </p>
+  <label className="flex flex-col gap-1">
+    <span className="text-sm font-medium text-gray-700">
+      Tags (1 a 3)
+    </span>
 
-  <div className="mt-2 flex flex-wrap gap-2">
-    {predefinedExerciseTags.map((tag) => {
-      const isSelected = selectedTags.includes(tag);
-
-      return (
-        <button
-          key={tag}
-          type="button"
-          onClick={() => toggleTag(tag)}
-          className={`rounded-full px-3 py-1 text-sm font-medium ${
-            isSelected
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
-        >
+    <select
+      multiple
+      value={selectedTags}
+      onChange={handleTagsChange}
+      className="h-36 rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:border-blue-500"
+    >
+      {predefinedExerciseTags.map((tag) => (
+        <option key={tag} value={tag}>
           {tag}
-        </button>
-      );
-    })}
+        </option>
+      ))}
+    </select>
+
+    <span className="text-xs text-gray-500">
+      Ctrl + click para seleccionar varios
+    </span>
+  </label>
   </div>
-</div>
+
+
 
       {error && (
         <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800">

@@ -1,38 +1,50 @@
 import SessionCard from "../components/SessionCard";
-import { useSessions } from "../hooks/useSessions";
 import { useGymLog } from "../context/GymLogContext";
+import { useSessions } from "../hooks/useSessions";
 
 function HistoryPage() {
   const { sessions } = useSessions();
-  const { addSession } = useGymLog();
+  const { addSession, removeSession } = useGymLog();
 
   async function repeatSession(sessionId: string) {
-  const sessionToRepeat = sessions.find((session) => session.id === sessionId);
+    const sessionToRepeat = sessions.find((session) => session.id === sessionId);
 
-  if (!sessionToRepeat) {
-    return;
+    if (!sessionToRepeat) {
+      return;
+    }
+
+    await addSession({
+      date: new Date().toISOString().split("T")[0],
+      notes: `Sesión repetida de ${sessionToRepeat.date}`,
+      exercises: sessionToRepeat.exercises,
+    });
   }
 
-  await addSession({
-    date: new Date().toISOString().split("T")[0],
-    notes: `Sesión repetida de ${sessionToRepeat.date}`,
-    exercises: sessionToRepeat.exercises,
-  });
-}
+  async function deleteSession(sessionId: string) {
+    const confirmDelete = window.confirm(
+      "¿Seguro que quieres eliminar esta sesión?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    await removeSession(sessionId);
+  }
 
   return (
     <section>
       <h1 className="text-4xl font-bold text-gray-900">Historial</h1>
 
       <p className="mt-2 text-gray-600">
-        Consulta las sesiones de entrenamiento que has registrado.
+        Consulta, edita, repite o elimina tus sesiones de entrenamiento.
       </p>
 
       <div className="mt-6">
         {sessions.length === 0 ? (
           <p className="rounded-xl bg-white p-6 text-gray-600 shadow-sm">
-            Todavía no hay sesiones registradas. Crea una desde la página
-            Nueva sesión.
+            Todavía no hay sesiones registradas. Crea una desde la página Nueva
+            sesión.
           </p>
         ) : (
           <div className="space-y-4">
@@ -41,6 +53,7 @@ function HistoryPage() {
                 key={session.id}
                 session={session}
                 onRepeat={() => repeatSession(session.id)}
+                onDelete={() => deleteSession(session.id)}
               />
             ))}
           </div>

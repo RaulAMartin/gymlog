@@ -11,9 +11,11 @@ import {
   createExercise,
   createOrUpdateRm,
   createSession,
+  deleteSession,
   getExercises,
   getRms,
   getSessions,
+  updateSession,
 } from "../api/client";
 
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
@@ -33,6 +35,11 @@ type GymLogContextValue = {
   clearFilters: () => void;
   addExercise: (exercise: Omit<Exercise, "id">) => Promise<void>;
   addSession: (session: Omit<TrainingSession, "id">) => Promise<void>;
+  editSession: (
+    id: string,
+    session: Partial<TrainingSession>
+  ) => Promise<void>;
+  removeSession: (id: string) => Promise<void>;
   addOrUpdateRm: (rm: Omit<ExerciseRM, "id" | "updatedAt">) => Promise<void>;
 };
 
@@ -139,6 +146,47 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     []
   );
 
+  const editSession = useCallback(
+    async (id: string, session: Partial<TrainingSession>) => {
+      try {
+        setError("");
+
+        const updatedSession = await updateSession(id, session);
+
+        setSessions((currentSessions) =>
+          currentSessions.map((currentSession) =>
+            currentSession.id === id ? updatedSession : currentSession
+          )
+        );
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "No se pudo actualizar la sesión."
+        );
+      }
+    },
+    []
+  );
+
+  const removeSession = useCallback(async (id: string) => {
+    try {
+      setError("");
+
+      await deleteSession(id);
+
+      setSessions((currentSessions) =>
+        currentSessions.filter((session) => session.id !== id)
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo eliminar la sesión."
+      );
+    }
+  }, []);
+
   const addOrUpdateRm = useCallback(
     async (rm: Omit<ExerciseRM, "id" | "updatedAt">) => {
       try {
@@ -183,6 +231,8 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     clearFilters,
     addExercise,
     addSession,
+    editSession,
+    removeSession,
     addOrUpdateRm,
   };
 
