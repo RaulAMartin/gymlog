@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useGymLog } from "../context/GymLogContext";
 import ExerciseForm from "../components/ExerciseForm";
+import AnimatedPage from "../components/AnimatedPage";
 
 function ExercisesPage() {
   const {
@@ -20,6 +21,7 @@ function ExercisesPage() {
   } = useGymLog();
 
   return (
+    <AnimatedPage>
     <section>
       <h1 className="text-4xl font-bold text-gray-900">Ejercicios</h1>
       <p className="mt-2 text-gray-600">
@@ -68,6 +70,7 @@ function ExercisesPage() {
         {!isLoading && !error && <ExerciseList exercises={filteredExercises} />}
       </div>
     </section>
+    </AnimatedPage>
   );
 }
 

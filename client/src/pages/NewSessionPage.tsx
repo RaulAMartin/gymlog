@@ -1,7 +1,9 @@
+import AnimatedPage from "../components/AnimatedPage";
 import SessionForm from "../components/SessionForm";
 
 function NewSessionPage() {
   return (
+    <AnimatedPage>
     <section>
       <h1 className="text-4xl font-bold text-gray-900">Nueva sesión</h1>
 
@@ -13,6 +15,7 @@ function NewSessionPage() {
         <SessionForm />
       </div>
     </section>
+    </AnimatedPage>
   );
 }
 

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useGymLog } from "../context/GymLogContext";
 import { useSessions } from "../hooks/useSessions";
+import AnimatedPage from "../components/AnimatedPage";
 
 function DashboardPage() {
   const { exercises } = useGymLog();
@@ -8,6 +9,7 @@ function DashboardPage() {
     useSessions();
 
   return (
+    <AnimatedPage>
     <section>
       <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
 
@@ -104,6 +106,7 @@ function DashboardPage() {
         </article>
       </div>
     </section>
+    </AnimatedPage>
   );
 }
 

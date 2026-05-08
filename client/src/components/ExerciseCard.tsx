@@ -1,5 +1,6 @@
 import type { Exercise } from "../types/gym";
 import { useGymLog } from "../context/GymLogContext";
+import { motion } from "motion/react";
 
 type ExerciseCardProps = {
   exercise: Exercise;
@@ -10,7 +11,13 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
   const { rms } = useGymLog();
   const exerciseRm = rms.find((rm) => rm.exerciseId === exercise.id);
   return (
-    <article className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <motion.article
+  initial={{ opacity: 0, scale: 0.97 }}
+  animate={{ opacity: 1, scale: 1 }}
+  whileHover={{ y: -4 }}
+  transition={{ duration: 0.2 }}
+  className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+  >
       <h3 className="text-lg font-bold text-gray-900">{exercise.name}</h3>
 
       <p className="mt-1 text-sm text-gray-600">
@@ -37,7 +44,7 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
           </span>
         ))}
       </div>
-    </article>
+    </motion.article>
   );
 }
 

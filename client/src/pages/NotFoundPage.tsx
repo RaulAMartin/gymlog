@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import AnimatedPage from "../components/AnimatedPage";
 
 function NotFoundPage() {
   return (
+    <AnimatedPage>
     <section className="rounded-xl bg-white p-8 text-center shadow-sm">
       <h1 className="text-4xl font-bold text-gray-900">404</h1>
 
@@ -16,6 +18,7 @@ function NotFoundPage() {
         Volver al inicio
       </Link>
     </section>
+    </AnimatedPage>
   );
 }
 

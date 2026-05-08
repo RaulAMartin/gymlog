@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { TrainingSession } from "../types/gym";
 import SessionEditForm from "./SessionEditForm";
+import { motion } from "motion/react";
 
 type SessionCardProps = {
   session: TrainingSession;
@@ -12,7 +13,13 @@ function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <article className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <motion.article
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  whileHover={{ y: -3 }}
+  transition={{ duration: 0.2 }}
+  className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+  >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900">
@@ -87,7 +94,7 @@ function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
           ))}
         </div>
       )}
-    </article>
+    </motion.article>
   );
 }
 

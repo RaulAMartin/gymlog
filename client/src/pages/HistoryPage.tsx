@@ -1,3 +1,4 @@
+import AnimatedPage from "../components/AnimatedPage";
 import SessionCard from "../components/SessionCard";
 import { useGymLog } from "../context/GymLogContext";
 import { useSessions } from "../hooks/useSessions";
@@ -33,6 +34,7 @@ function HistoryPage() {
   }
 
   return (
+    <AnimatedPage>
     <section>
       <h1 className="text-4xl font-bold text-gray-900">Historial</h1>
 
@@ -60,6 +62,7 @@ function HistoryPage() {
         )}
       </div>
     </section>
+    </AnimatedPage>
   );
 }
 
