@@ -6,6 +6,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { useGymLog } from "../context/GymLogContext";
 import ExerciseForm from "../components/ExerciseForm";
 import AnimatedPage from "../components/AnimatedPage";
+import ExerciseTemplateList from "../components/ExerciseTemplateList";
 
 function ExercisesPage() {
   const {
@@ -32,6 +33,8 @@ function ExercisesPage() {
         </p>
 
         <div className="mt-6 rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
+          <ExerciseTemplateList />
+          
           <ExerciseForm />
 
           <div className="mb-6 grid gap-4 md:grid-cols-3">
