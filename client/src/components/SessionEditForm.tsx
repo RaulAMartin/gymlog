@@ -89,7 +89,7 @@ function SessionEditForm({ session, onCancel, onSaved }: SessionEditFormProps) {
       onSubmit={handleSubmit}
       className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-4"
     >
-      <h3 className="text-lg font-bold text-gray-900">Editar sesión</h3>
+      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Editar sesión</h3>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Input label="Fecha" type="date" value={date} onChange={setDate} />
@@ -100,7 +100,7 @@ function SessionEditForm({ session, onCancel, onSaved }: SessionEditFormProps) {
           <select
             value={selectedExerciseId}
             onChange={(event) => setSelectedExerciseId(event.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:border-blue-500"
+            className="rounded-lg border border-gray-300 bg-white dark:bg-gray-800 px-3 py-2 outline-none focus:border-blue-500"
           >
             <option value="">Selecciona un ejercicio</option>
 
@@ -140,7 +140,7 @@ function SessionEditForm({ session, onCancel, onSaved }: SessionEditFormProps) {
         <textarea
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
-          className="min-h-24 rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:border-blue-500"
+          className="min-h-24 rounded-lg border border-gray-300 bg-white dark:bg-gray-800 px-3 py-2 outline-none focus:border-blue-500"
         />
       </label>
 
@@ -156,7 +156,7 @@ function SessionEditForm({ session, onCancel, onSaved }: SessionEditFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-lg bg-gray-200 px-4 py-2 font-medium text-gray-900 hover:bg-gray-300"
+          className="rounded-lg bg-gray-200 px-4 py-2 font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-300"
         >
           Cancelar
         </button>

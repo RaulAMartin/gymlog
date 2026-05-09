@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
 import ExercisesPage from "./pages/ExercisesPage";
 import HistoryPage from "./pages/HistoryPage";
@@ -11,14 +13,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/exercises" element={<ExercisesPage />} />
-          <Route path="/sessions/new" element={<NewSessionPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/rm" element={<RMPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/exercises" element={<ExercisesPage />} />
+            <Route path="/sessions/new" element={<NewSessionPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/rm" element={<RMPage />} />
+          </Route>
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

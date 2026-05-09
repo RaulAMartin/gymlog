@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-6 py-8">

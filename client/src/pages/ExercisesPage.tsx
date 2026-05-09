@@ -22,54 +22,64 @@ function ExercisesPage() {
 
   return (
     <AnimatedPage>
-    <section>
-      <h1 className="text-4xl font-bold text-gray-900">Ejercicios</h1>
-      <p className="mt-2 text-gray-600">
-        Biblioteca de ejercicios con búsqueda y filtros por tags.
-      </p>
+      <section>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+          Ejercicios
+        </h1>
 
-      <div className="mt-6 rounded-xl bg-white p-6 shadow-sm">
-        <ExerciseForm />
-        <div className="mb-6 grid gap-4 md:grid-cols-3">
-          <Input
-            label="Buscar ejercicio"
-            value={search}
-            placeholder="Ej: press banca"
-            onChange={setSearch}
-          />
+        <p className="mt-2 text-gray-600 dark:text-gray-300">
+          Biblioteca de ejercicios con búsqueda y filtros por tags.
+        </p>
 
-          <label className="flex flex-col gap-1">
-            <span className="text-sm font-medium text-gray-700">
-              Filtrar por tag
-            </span>
+        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
+          <ExerciseForm />
 
-            <select
-              value={selectedTag}
-              onChange={(event) => setSelectedTag(event.target.value)}
-              className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-            >
-              <option value="">Todos</option>
+          <div className="mb-6 grid gap-4 md:grid-cols-3">
+            <Input
+              label="Buscar ejercicio"
+              value={search}
+              placeholder="Ej: press banca"
+              onChange={setSearch}
+            />
 
-              {availableTags.map((tag) => (
-                <option key={tag} value={tag}>
-                  {tag}
-                </option>
-              ))}
-            </select>
-          </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Filtrar por tag
+              </span>
 
-          <div className="flex items-end">
-            <Button onClick={clearFilters}>Limpiar filtros</Button>
+              <select
+                value={selectedTag}
+                onChange={(event) => setSelectedTag(event.target.value)}
+                className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+              >
+                <option value="">Todos</option>
+
+                {availableTags.map((tag) => (
+                  <option
+                    key={tag}
+                    value={tag}
+                    className="dark:bg-gray-900 dark:text-gray-100"
+                  >
+                    {tag}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="flex items-end">
+              <Button onClick={clearFilters}>Limpiar filtros</Button>
+            </div>
           </div>
+
+          {isLoading && <LoadingSpinner />}
+
+          {error && <ErrorMessage message={error} />}
+
+          {!isLoading && !error && (
+            <ExerciseList exercises={filteredExercises} />
+          )}
         </div>
-
-        {isLoading && <LoadingSpinner />}
-
-        {error && <ErrorMessage message={error} />}
-
-        {!isLoading && !error && <ExerciseList exercises={filteredExercises} />}
-      </div>
-    </section>
+      </section>
     </AnimatedPage>
   );
 }

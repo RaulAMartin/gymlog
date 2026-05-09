@@ -9,37 +9,74 @@ type SessionCardProps = {
   onDelete?: () => void;
 };
 
-function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
+function SessionCard({
+  session,
+  onRepeat,
+  onDelete,
+}: SessionCardProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
     <motion.article
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  whileHover={{ y: -3 }}
-  transition={{ duration: 0.2 }}
-  className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
-  >
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.2 }}
+      className="
+        rounded-xl
+        border
+        border-gray-200
+        bg-white
+        p-4
+        shadow-sm
+        dark:border-gray-700
+        dark:bg-gray-800
+      "
+    >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             Sesión del {session.date}
           </h2>
 
           {session.notes && (
-            <p className="mt-1 text-sm text-gray-600">{session.notes}</p>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+              {session.notes}
+            </p>
           )}
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700">
+          <span
+            className="
+              rounded-full
+              bg-blue-50
+              px-3
+              py-2
+              text-sm
+              font-medium
+              text-blue-700
+              dark:bg-blue-900/30
+              dark:text-blue-300
+            "
+          >
             {session.exercises.length} ejercicio/s
           </span>
 
           <button
             type="button"
             onClick={() => setIsEditing((current) => !current)}
-            className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="
+              rounded-lg
+              bg-blue-600
+              px-3
+              py-2
+              text-sm
+              font-medium
+              text-white
+              transition
+              hover:bg-blue-700
+            "
           >
             {isEditing ? "Cerrar edición" : "Editar"}
           </button>
@@ -48,7 +85,19 @@ function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
             <button
               type="button"
               onClick={onRepeat}
-              className="rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white hover:bg-gray-800"
+              className="
+                rounded-lg
+                bg-gray-900
+                px-3
+                py-2
+                text-sm
+                font-medium
+                text-white
+                transition
+                hover:bg-gray-800
+                dark:bg-gray-700
+                dark:hover:bg-gray-600
+              "
             >
               Repetir hoy
             </button>
@@ -58,7 +107,17 @@ function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
             <button
               type="button"
               onClick={onDelete}
-              className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700"
+              className="
+                rounded-lg
+                bg-red-600
+                px-3
+                py-2
+                text-sm
+                font-medium
+                text-white
+                transition
+                hover:bg-red-700
+              "
             >
               Eliminar
             </button>
@@ -77,13 +136,18 @@ function SessionCard({ session, onRepeat, onDelete }: SessionCardProps) {
           {session.exercises.map((exercise) => (
             <div
               key={exercise.exerciseId}
-              className="rounded-lg bg-gray-50 p-3"
+              className="
+                rounded-lg
+                bg-gray-50
+                p-3
+                dark:bg-gray-700
+              "
             >
-              <h3 className="font-semibold text-gray-900">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                 {exercise.exerciseName}
               </h3>
 
-              <ul className="mt-2 space-y-1 text-sm text-gray-700">
+              <ul className="mt-2 space-y-1 text-sm text-gray-700 dark:text-gray-300">
                 {exercise.sets.map((set, index) => (
                   <li key={index}>
                     Serie {index + 1}: {set.reps} reps x {set.weight} kg

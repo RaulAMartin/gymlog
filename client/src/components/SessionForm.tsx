@@ -50,24 +50,24 @@ function SessionForm() {
     }
 
     if (!series || Number.isNaN(numericSeries) || numericSeries <= 0) {
-     setError("El número de series debe ser mayor que 0.");
+      setError("El número de series debe ser mayor que 0.");
       return;
     }
 
     await addSession({
-  date,
-  notes,
-  exercises: [
-    {
-      exerciseId: selectedExercise.id,
-      exerciseName: selectedExercise.name,
-     sets: Array.from({ length: numericSeries }, () => ({
-  reps: numericReps,
-  weight: numericWeight,
-})),
-    },
-  ],
-});
+      date,
+      notes,
+      exercises: [
+        {
+          exerciseId: selectedExercise.id,
+          exerciseName: selectedExercise.name,
+          sets: Array.from({ length: numericSeries }, () => ({
+            reps: numericReps,
+            weight: numericWeight,
+          })),
+        },
+      ],
+    });
 
     setDate("");
     setSelectedExerciseId("");
@@ -79,12 +79,15 @@ function SessionForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800"
+    >
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
         Registrar nueva sesión
       </h2>
 
-      <p className="mt-2 text-gray-600">
+      <p className="mt-2 text-gray-600 dark:text-gray-300">
         Añade un ejercicio, repeticiones, peso y notas de entrenamiento.
       </p>
 
@@ -97,17 +100,23 @@ function SessionForm() {
         />
 
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Ejercicio</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Ejercicio
+          </span>
 
           <select
             value={selectedExerciseId}
             onChange={(event) => setSelectedExerciseId(event.target.value)}
-            className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           >
             <option value="">Selecciona un ejercicio</option>
 
             {exercises.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>
+              <option
+                key={exercise.id}
+                value={exercise.id}
+                className="dark:bg-gray-900 dark:text-gray-100"
+              >
                 {exercise.name}
               </option>
             ))}
@@ -131,33 +140,35 @@ function SessionForm() {
         />
 
         <Input
-            label="Número de series"
-            type="number"
-             value={series}
-             placeholder="Ej: 3"
-             onChange={setSeries}
+          label="Número de series"
+          type="number"
+          value={series}
+          placeholder="Ej: 3"
+          onChange={setSeries}
         />
       </div>
 
       <label className="mt-4 flex flex-col gap-1">
-        <span className="text-sm font-medium text-gray-700">Notas</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Notas
+        </span>
 
         <textarea
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
           placeholder="Ej: Buen entrenamiento de pecho"
-          className="min-h-24 rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          className="min-h-24 rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
         />
       </label>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800">
+        <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900/30 dark:text-red-300">
           {error}
         </p>
       )}
 
       {successMessage && (
-        <p className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-800">
+        <p className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/30 dark:text-green-300">
           {successMessage}
         </p>
       )}

@@ -56,43 +56,51 @@ function RMForm() {
     }
 
     if (!selectedExercise) {
-    setError("El ejercicio seleccionado no existe.");
-    return;
+      setError("El ejercicio seleccionado no existe.");
+      return;
     }
 
     await addOrUpdateRm({
-    exerciseId: selectedExercise.id,
-    exerciseName: selectedExercise.name,
-    rm: numericRm,
-  });
+      exerciseId: selectedExercise.id,
+      exerciseName: selectedExercise.name,
+      rm: numericRm,
+    });
 
     setSavedRm(numericRm);
     setSuccessMessage(
-      `RM registrado para ${selectedExercise?.name}: ${numericRm} kg.`
+      `RM registrado para ${selectedExercise.name}: ${numericRm} kg.`
     );
   }
 
   return (
-    <section className="rounded-xl bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900">Registrar RM</h2>
+    <section className="rounded-xl bg-white p-6 shadow-sm dark:bg-gray-800">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+        Registrar RM
+      </h2>
 
-      <p className="mt-2 text-gray-600">
+      <p className="mt-2 text-gray-600 dark:text-gray-300">
         Selecciona un ejercicio e introduce tu repetición máxima.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 grid gap-4 md:grid-cols-3">
         <label className="flex flex-col gap-1">
-          <span className="text-sm font-medium text-gray-700">Ejercicio</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Ejercicio
+          </span>
 
           <select
             value={selectedExerciseId}
             onChange={(event) => setSelectedExerciseId(event.target.value)}
-            className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
           >
             <option value="">Selecciona un ejercicio</option>
 
             {exercises.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>
+              <option
+                key={exercise.id}
+                value={exercise.id}
+                className="dark:bg-gray-900 dark:text-gray-100"
+              >
                 {exercise.name}
               </option>
             ))}
@@ -113,20 +121,20 @@ function RMForm() {
       </form>
 
       {error && (
-        <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800">
+        <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900/30 dark:text-red-300">
           {error}
         </p>
       )}
 
       {successMessage && (
-        <p className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-800">
+        <p className="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-800 dark:bg-green-900/30 dark:text-green-300">
           {successMessage}
         </p>
       )}
 
       {recommendations.length > 0 && (
         <div className="mt-6">
-          <h3 className="mb-4 text-xl font-bold text-gray-900">
+          <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-gray-100">
             Pesos recomendados
           </h3>
 
@@ -137,7 +145,7 @@ function RMForm() {
                 recommendation={recommendation}
               />
             ))}
-          </div>
+             </div>
         </div>
       )}
     </section>
