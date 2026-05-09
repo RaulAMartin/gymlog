@@ -1,3 +1,9 @@
+import { useAuth } from "./AuthContext";
+import {
+  createSupabaseExercise,
+  getSupabaseExercises,
+} from "../services/exerciseSupabaseService";
+
 import {
   createContext,
   useCallback,
@@ -8,11 +14,9 @@ import {
 } from "react";
 
 import {
-  createExercise,
   createOrUpdateRm,
   createSession,
   deleteSession,
-  getExercises,
   getRms,
   getSessions,
   updateSession,
@@ -50,6 +54,8 @@ type GymLogProviderProps = {
 const GymLogContext = createContext<GymLogContextValue | undefined>(undefined);
 
 export function GymLogProvider({ children }: GymLogProviderProps) {
+  const { user, isAuthLoading } = useAuth();
+
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [sessions, setSessions] = useState<TrainingSession[]>([]);
   const [rms, setRms] = useState<ExerciseRM[]>([]);
@@ -60,12 +66,24 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
 
   useEffect(() => {
     async function loadInitialData() {
+      if (isAuthLoading) {
+        return;
+      }
+
+      if (!user) {
+        setExercises([]);
+        setSessions([]);
+        setRms([]);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
         setError("");
 
         const [exercisesData, sessionsData, rmsData] = await Promise.all([
-          getExercises(),
+          getSupabaseExercises(user.id),
           getSessions(),
           getRms(),
         ]);
@@ -85,7 +103,7 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     }
 
     loadInitialData();
-  }, []);
+  }, [user, isAuthLoading]);
 
   const availableTags = useMemo(() => {
     const tags = exercises.flatMap((exercise) => exercise.tags);
@@ -111,21 +129,32 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSelectedTag("");
   }, []);
 
-  const addExercise = useCallback(async (exercise: Omit<Exercise, "id">) => {
-    try {
-      setError("");
+  const addExercise = useCallback(
+    async (exercise: Omit<Exercise, "id">) => {
+      if (!user) {
+        setError("Debes iniciar sesión para crear ejercicios.");
+        return;
+      }
 
-      const newExercise = await createExercise(exercise);
+      try {
+        setError("");
 
-      setExercises((currentExercises) => [...currentExercises, newExercise]);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "No se pudo crear el ejercicio."
-      );
-    }
-  }, []);
+        const newExercise = await createSupabaseExercise(user.id, exercise);
+
+        setExercises((currentExercises) => [
+          newExercise,
+          ...currentExercises,
+        ]);
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "No se pudo crear el ejercicio."
+        );
+      }
+    },
+    [user]
+  );
 
   const addSession = useCallback(
     async (session: Omit<TrainingSession, "id">) => {
