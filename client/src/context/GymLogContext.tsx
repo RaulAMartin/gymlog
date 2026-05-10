@@ -9,6 +9,13 @@ import {
 } from "../services/rmSupabaseService";
 
 import {
+  createSupabaseSession,
+  deleteSupabaseSession,
+  getSupabaseSessions,
+  updateSupabaseSession,
+} from "../services/sessionSupabaseService";
+
+import {
   createContext,
   useCallback,
   useContext,
@@ -16,13 +23,6 @@ import {
   useMemo,
   useState,
 } from "react";
-
-import {
-  createSession,
-  deleteSession,
-  getSessions,
-  updateSession,
-} from "../api/client";
 
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
 
@@ -85,10 +85,10 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
         setError("");
 
         const [exercisesData, sessionsData, rmsData] = await Promise.all([
-          getSupabaseExercises(user.id),
-          getSessions(),
-          getSupabaseRms(user.id),
-        ]);
+  getSupabaseExercises(user.id),
+  getSupabaseSessions(user.id),
+  getSupabaseRms(user.id),
+  ]);
 
         setExercises(exercisesData);
         setSessions(sessionsData);
@@ -159,52 +159,72 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   );
 
   const addSession = useCallback(
-    async (session: Omit<TrainingSession, "id">) => {
-      try {
-        setError("");
+  async (session: Omit<TrainingSession, "id">) => {
+    if (!user) {
+      setError("Debes iniciar sesión para guardar sesiones.");
+      return;
+    }
 
-        const newSession = await createSession(session);
-
-        setSessions((currentSessions) => [newSession, ...currentSessions]);
-      } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "No se pudo guardar la sesión."
-        );
-      }
-    },
-    []
-  );
-
-  const editSession = useCallback(
-    async (id: string, session: Partial<TrainingSession>) => {
-      try {
-        setError("");
-
-        const updatedSession = await updateSession(id, session);
-
-        setSessions((currentSessions) =>
-          currentSessions.map((currentSession) =>
-            currentSession.id === id ? updatedSession : currentSession
-          )
-        );
-      } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "No se pudo actualizar la sesión."
-        );
-      }
-    },
-    []
-  );
-
-  const removeSession = useCallback(async (id: string) => {
     try {
       setError("");
 
-      await deleteSession(id);
+      const newSession = await createSupabaseSession(user.id, session);
+
+      setSessions((currentSessions) => [newSession, ...currentSessions]);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar la sesión."
+      );
+    }
+  },
+  [user]
+);
+
+  const editSession = useCallback(
+  async (id: string, session: Partial<TrainingSession>) => {
+    if (!user) {
+      setError("Debes iniciar sesión para editar sesiones.");
+      return;
+    }
+
+    try {
+      setError("");
+
+      const updatedSession = await updateSupabaseSession(
+        user.id,
+        id,
+        session
+      );
+
+      setSessions((currentSessions) =>
+        currentSessions.map((currentSession) =>
+          currentSession.id === id ? updatedSession : currentSession
+        )
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo actualizar la sesión."
+      );
+    }
+  },
+  [user]
+);
+
+  const removeSession = useCallback(
+  async (id: string) => {
+    if (!user) {
+      setError("Debes iniciar sesión para eliminar sesiones.");
+      return;
+    }
+
+    try {
+      setError("");
+
+      await deleteSupabaseSession(user.id, id);
 
       setSessions((currentSessions) =>
         currentSessions.filter((session) => session.id !== id)
@@ -216,7 +236,9 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
           : "No se pudo eliminar la sesión."
       );
     }
-  }, []);
+  },
+  [user]
+);
 
   const addOrUpdateRm = useCallback(
   async (rm: Omit<ExerciseRM, "id" | "updatedAt">) => {
