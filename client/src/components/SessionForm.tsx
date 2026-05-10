@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useGymLog } from "../context/GymLogContext";
 import Button from "./Button";
 import Input from "./Input";
+import { useSearchParams } from "react-router-dom";
 
 function SessionForm() {
   const { exercises, addSession } = useGymLog();
+  const [searchParams] = useSearchParams();
+  const initialExerciseId = searchParams.get("exerciseId") ?? "";
 
   const [date, setDate] = useState("");
-  const [selectedExerciseId, setSelectedExerciseId] = useState("");
+  const [selectedExerciseId, setSelectedExerciseId] = useState(initialExerciseId);
   const [reps, setReps] = useState("");
   const [series, setSeries] = useState("");
   const [weight, setWeight] = useState("");

@@ -1,13 +1,14 @@
 import type { Exercise } from "../types/gym";
 import { useGymLog } from "../context/GymLogContext";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 type ExerciseCardProps = {
   exercise: Exercise;
 };
 
 function ExerciseCard({ exercise }: ExerciseCardProps) {
-  const { rms } = useGymLog();
+  const { rms, removeExercise } = useGymLog();
 
   const exerciseRm = rms.find((rm) => rm.exerciseId === exercise.id);
 
@@ -76,26 +77,30 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
         </p>
       )}
 
-      <div className="mt-3 flex flex-wrap gap-2">
-        {exercise.tags.map((tag) => (
-          <span
-            key={tag}
-            className="
-              rounded-full
-              bg-gray-100
-              px-3
-              py-1
-              text-xs
-              font-medium
-              text-gray-700
-              dark:bg-gray-700
-              dark:text-gray-200
-            "
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      <div className="mt-4 grid grid-cols-3 gap-2">
+  <Link
+    to={`/sessions/new?exerciseId=${exercise.id}`}
+    className="rounded-lg bg-blue-600 px-2 py-2 text-center text-xs font-medium text-white hover:bg-blue-700"
+  >
+    Usar sesión
+  </Link>
+
+  <Link
+    to={`/rm?exerciseId=${exercise.id}`}
+    className="rounded-lg bg-gray-900 px-2 py-2 text-center text-xs font-medium text-white hover:bg-gray-800"
+  >
+    Registrar RM
+  </Link>
+
+  <button
+    type="button"
+    onClick={() => removeExercise(exercise.id)}
+    className="rounded-lg bg-red-600 px-2 py-2 text-xs font-medium text-white hover:bg-red-700"
+  >
+    Eliminar
+  </button>
+</div>
+
     </motion.article>
   );
 }

@@ -2,6 +2,7 @@ import { useAuth } from "./AuthContext";
 import {
   createSupabaseExercise,
   getSupabaseExercises,
+  deleteSupabaseExercise,
 } from "../services/exerciseSupabaseService";
 import {
   createOrUpdateSupabaseRm,
@@ -27,6 +28,7 @@ import {
 import type { Exercise, ExerciseRM, TrainingSession } from "../types/gym";
 
 type GymLogContextValue = {
+  removeExercise: (id: string) => Promise<void>;
   exercises: Exercise[];
   sessions: TrainingSession[];
   rms: ExerciseRM[];
@@ -278,6 +280,40 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   [user]
   );
 
+  const removeExercise = useCallback(
+  async (id: string) => {
+    if (!user) {
+      setError("Debes iniciar sesión para eliminar ejercicios.");
+      return;
+    }
+
+    const confirmDelete = window.confirm(
+      "¿Seguro que quieres eliminar este ejercicio?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setError("");
+
+      await deleteSupabaseExercise(user.id, id);
+
+      setExercises((currentExercises) =>
+        currentExercises.filter((exercise) => exercise.id !== id)
+      );
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo eliminar el ejercicio."
+      );
+    }
+  },
+  [user]
+);
+
   const value: GymLogContextValue = {
     exercises,
     sessions,
@@ -292,6 +328,7 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
     setSelectedTag,
     clearFilters,
     addExercise,
+    removeExercise,
     addSession,
     editSession,
     removeSession,

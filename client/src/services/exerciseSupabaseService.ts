@@ -57,3 +57,19 @@ export async function createSupabaseExercise(
 
   return mapExerciseFromSupabase(data);
 }
+
+export async function deleteSupabaseExercise(
+  userId: string,
+  exerciseId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from("exercises")
+    .delete()
+    .eq("id", exerciseId)
+    .eq("user_id", userId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+

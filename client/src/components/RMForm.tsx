@@ -4,11 +4,14 @@ import { calculateWeightRecommendations } from "../utils/calculateWeights";
 import Button from "./Button";
 import Input from "./Input";
 import WeightRecommendationCard from "./WeightRecommendationCard";
+import { useSearchParams } from "react-router-dom";
 
 function RMForm() {
   const { exercises, addOrUpdateRm } = useGymLog();
+  const [searchParams] = useSearchParams();
+  const initialExerciseId = searchParams.get("exerciseId") ?? "";
 
-  const [selectedExerciseId, setSelectedExerciseId] = useState("");
+  const [selectedExerciseId, setSelectedExerciseId] = useState(initialExerciseId);
   const [rm, setRm] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -50,8 +53,8 @@ function RMForm() {
       return;
     }
 
-    if (numericRm <= 0) {
-      setError("El RM debe ser mayor que 0.");
+    if (numericRm < 0) {
+      setError("El RM no puede ser negativo.");
       return;
     }
 
