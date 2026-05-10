@@ -3,6 +3,10 @@ import {
   createSupabaseExercise,
   getSupabaseExercises,
 } from "../services/exerciseSupabaseService";
+import {
+  createOrUpdateSupabaseRm,
+  getSupabaseRms,
+} from "../services/rmSupabaseService";
 
 import {
   createContext,
@@ -14,10 +18,8 @@ import {
 } from "react";
 
 import {
-  createOrUpdateRm,
   createSession,
   deleteSession,
-  getRms,
   getSessions,
   updateSession,
 } from "../api/client";
@@ -85,7 +87,7 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
         const [exercisesData, sessionsData, rmsData] = await Promise.all([
           getSupabaseExercises(user.id),
           getSessions(),
-          getRms(),
+          getSupabaseRms(user.id),
         ]);
 
         setExercises(exercisesData);
@@ -217,32 +219,41 @@ export function GymLogProvider({ children }: GymLogProviderProps) {
   }, []);
 
   const addOrUpdateRm = useCallback(
-    async (rm: Omit<ExerciseRM, "id" | "updatedAt">) => {
-      try {
-        setError("");
+  async (rm: Omit<ExerciseRM, "id" | "updatedAt">) => {
+    if (!user) {
+      setError("Debes iniciar sesión.");
+      return;
+    }
 
-        const savedRm = await createOrUpdateRm(rm);
+    try {
+      setError("");
 
-        setRms((currentRms) => {
-          const exists = currentRms.some(
-            (currentRm) => currentRm.exerciseId === savedRm.exerciseId
-          );
+      const savedRm = await createOrUpdateSupabaseRm(user.id, rm);
 
-          if (exists) {
-            return currentRms.map((currentRm) =>
-              currentRm.exerciseId === savedRm.exerciseId ? savedRm : currentRm
-            );
-          }
-
-          return [...currentRms, savedRm];
-        });
-      } catch (error) {
-        setError(
-          error instanceof Error ? error.message : "No se pudo guardar el RM."
+      setRms((currentRms) => {
+        const exists = currentRms.some(
+          (currentRm) => currentRm.exerciseId === savedRm.exerciseId
         );
-      }
-    },
-    []
+
+        if (exists) {
+          return currentRms.map((currentRm) =>
+            currentRm.exerciseId === savedRm.exerciseId
+              ? savedRm
+              : currentRm
+          );
+        }
+
+        return [...currentRms, savedRm];
+      });
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar el RM."
+      );
+    }
+  },
+  [user]
   );
 
   const value: GymLogContextValue = {
