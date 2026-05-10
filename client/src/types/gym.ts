@@ -3,6 +3,7 @@ export type Exercise = {
   name: string;
   muscleGroup: string;
   tags: string[];
+  imageUrl?: string | null;
 };
 
 export type TrainingSet = {

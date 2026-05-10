@@ -27,7 +27,7 @@ function mapTemplateFromSupabase(
 
 export async function getExerciseTemplates(): Promise<ExerciseTemplate[]> {
   const { data, error } = await supabase
-    .from("exercise_templates")
+    .from("exercises_templates")
     .select("id, name, muscle_group, tags, image_url")
     .order("name", { ascending: true });
 

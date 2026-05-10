@@ -54,9 +54,10 @@ function ExerciseTemplateList() {
     }
 
     await addExercise({
-      name: template.name,
-      muscleGroup: template.muscleGroup,
-      tags: template.tags,
+        name: template.name,
+        muscleGroup: template.muscleGroup,
+        tags: template.tags,
+        imageUrl: template.imageUrl,
     });
 
     setSuccessMessage(`${template.name} importado correctamente.`);

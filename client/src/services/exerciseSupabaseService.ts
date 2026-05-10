@@ -6,6 +6,7 @@ type SupabaseExerciseRow = {
   name: string;
   muscle_group: string;
   tags: string[];
+  image_url: string | null;
 };
 
 function mapExerciseFromSupabase(row: SupabaseExerciseRow): Exercise {
@@ -14,13 +15,14 @@ function mapExerciseFromSupabase(row: SupabaseExerciseRow): Exercise {
     name: row.name,
     muscleGroup: row.muscle_group,
     tags: row.tags,
+    imageUrl: row.image_url,
   };
 }
 
 export async function getSupabaseExercises(userId: string): Promise<Exercise[]> {
   const { data, error } = await supabase
     .from("exercises")
-    .select("id, name, muscle_group, tags")
+    .select("id, name, muscle_group, tags, image_url")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
 
@@ -42,10 +44,11 @@ export async function createSupabaseExercise(
       name: exercise.name,
       muscle_group: exercise.muscleGroup,
       tags: exercise.tags,
+      image_url: exercise.imageUrl ?? null,
       source: "user",
       is_public: false,
     })
-    .select("id, name, muscle_group, tags")
+    .select("id, name, muscle_group, tags, image_url")
     .single();
 
   if (error) {

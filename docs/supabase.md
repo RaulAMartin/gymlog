@@ -85,3 +85,26 @@ Se crean las series en session_sets.
 
 El historial carga las sesiones desde Supabase y permite editarlas, repetirlas y eliminarlas.
 
+## Perfiles e imágenes
+
+Se ha añadido una página de perfil donde el usuario puede ver su email y editar su nombre de usuario y nombre completo.
+
+También se ha preparado el modelo de ejercicios para soportar imágenes mediante el campo `image_url`.
+
+Las imágenes pueden venir desde la tabla `exercises_templates` y copiarse a los ejercicios personales del usuario al importar un ejercicio base.
+
+## Sistema de amigos como mejora futura
+
+La base de datos ya contiene la tabla `friendships`, preparada para una funcionalidad social.
+
+Esta mejora permitiría:
+
+- buscar usuarios
+- enviar solicitudes de amistad
+- aceptar o rechazar solicitudes
+- comparar marcas RM
+- comparar rutinas
+- compartir entrenamientos
+
+Se deja documentado como evolución profesional del proyecto.
+

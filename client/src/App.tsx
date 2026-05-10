@@ -8,6 +8,7 @@ import HistoryPage from "./pages/HistoryPage";
 import NewSessionPage from "./pages/NewSessionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RMPage from "./pages/RMPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/sessions/new" element={<NewSessionPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/rm" element={<RMPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
 

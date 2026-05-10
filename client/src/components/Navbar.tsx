@@ -23,6 +23,10 @@ const navItems = [
     label: "Marcas RM",
     path: "/rm",
   },
+  {
+    label: "Mi perfil",
+    path: "/profile",
+  },
 ];
 
 function Navbar() {

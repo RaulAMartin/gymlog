@@ -28,6 +28,13 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
         dark:bg-gray-800
       "
     >
+      {exercise.imageUrl && (
+        <img
+          src={exercise.imageUrl}
+          alt={exercise.name}
+          className="mb-3 h-36 w-full rounded-lg object-cover"
+        />
+      )}
       <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
         {exercise.name}
       </h3>
