@@ -1,180 +1,195 @@
-# GymLog
+GymLog
 
-GymLog es una aplicación web fullstack para registrar entrenamientos de gimnasio, gestionar una biblioteca de ejercicios y calcular recomendaciones de peso a partir del RM del usuario.
+Aplicación web fullstack para registrar entrenamientos de gimnasio, gestionar ejercicios personalizados, historial de sesiones y marcas RM.
 
-## Descripción
+Descripción del proyecto:
 
-La aplicación permite consultar y crear ejercicios, asociarles tags, filtrar ejercicios por nombre o categoría, registrar marcas RM y calcular pesos recomendados según distintos objetivos de entrenamiento.
+GymLog es una aplicación desarrollada como proyecto final de Desarrollo de Aplicaciones Multiplataforma (DAM).
 
-## Tecnologías utilizadas
+El objetivo principal del proyecto ha sido crear una plataforma moderna y escalable donde cada usuario pueda:
 
-### Frontend
+Registrar entrenamientos
+Gestionar ejercicios personalizados
+Registrar marcas RM
+Consultar historial de sesiones
+Utilizar una base de datos sincronizada en la nube
+Mantener sesiones persistentes mediante autenticación
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
+Tecnologías utilizadas:
 
-### Backend
+Frontend
+React
+TypeScript
+TailwindCSS
+React Router
+Framer Motion
 
-- Node.js
-- Express
-- API REST
-- CORS
+Backend/API REST:
 
-### Organización y documentación
+Node.js
+Express
 
-- Trello
-- GitHub
-- Markdown
-- Vercel
-- Render
+Base de datos y autenticación:
 
-## Estructura del proyecto
+Supabase
+PostgreSQL
+Supabase Auth
 
-```txt
-gym-tracker-app/
-├── client/
-│   └── src/
-│       ├── api/
-│       ├── components/
-│       ├── context/
-│       ├── data/
-│       ├── hooks/
-│       ├── pages/
-│       ├── types/
-│       └── utils/
-├── server/
-│   ├── controllers/
-│   ├── data/
-│   ├── routes/
-│   ├── services/
-│   └── index.js
-├── docs/
-└── README.md
-Funcionalidades principales
-Biblioteca de ejercicios
-Creación de nuevos ejercicios
-Tags para clasificar ejercicios
-Búsqueda de ejercicios por nombre
-Filtro de ejercicios por tag
-Registro de RM
-Cálculo de pesos recomendados
-Navegación con React Router
-Página 404
-API REST con Express
-Cliente de API tipado en frontend
-Estados de carga, éxito y error
-Despliegue
+Deploy:
 
-Frontend desplegado en Vercel:
+Frontend: Vercel
+Backend/API: Render
+
+URLs del proyecto:
+
+Frontend (Vercel):
 
 https://gymlog-sage.vercel.app/
 
-Backend/API desplegado en Render:
+Backend/API (Render):
 
-https://gymlog-api-5yup.onrender.com
+https://gymlog-api-5yup.onrender.com/
 
-Endpoint principal de la API:
+Funcionalidades principales:
 
-https://gymlog-api-5yup.onrender.com/api/v1
-Endpoints principales
-Ejercicios
-GET /api/v1/exercises
-POST /api/v1/exercises
-GET /api/v1/exercises/:id
-PUT /api/v1/exercises/:id
-DELETE /api/v1/exercises/:id
-Sesiones
-GET /api/v1/sessions
-POST /api/v1/sessions
-GET /api/v1/sessions/:id
-PUT /api/v1/sessions/:id
-DELETE /api/v1/sessions/:id
-RM
-GET /api/v1/rms
-POST /api/v1/rms
-GET /api/v1/rms/:id
-DELETE /api/v1/rms/:id
-Instalación en local
+Sistema de usuarios:
 
-Clonar el repositorio:
+Registro de usuarios
+Inicio de sesión
+Persistencia de sesión
+Logout
+Protección de rutas privadas
 
-git clone URL_DEL_REPOSITORIO
-cd gym-tracker-app
+Gestión de ejercicios:
 
-Instalar y ejecutar backend:
+Crear ejercicios personalizados
+Eliminar ejercicios
+Filtrar por tags
+Búsqueda dinámica
+Importar ejercicios base
+Ejercicios con imágenes
+Asociación de RM por ejercicio
 
-cd server
-npm install
-npm run dev
+Sistema RM:
 
-El backend se ejecutará en:
+El usuario puede registrar una marca RM personalizada por ejercicio.
 
-http://localhost:3000
+La aplicación calcula automáticamente:
 
-Instalar y ejecutar frontend en otra terminal:
+RM 100%
+Fuerza 80%
+Bodybuilding 60%
+Cardio 40%
+
+También se permite registrar ejercicios sin peso (RM = 0).
+
+Sesiones de entrenamiento:
+
+Crear sesiones
+Historial persistente
+Editar sesiones
+Repetir sesiones
+Asociación de ejercicios y series
+Persistencia en Supabase
+
+Interfaz y experiencia de usuario:
+
+Diseño responsive
+Modo oscuro
+Animaciones
+Transiciones suaves
+Componentización modular
+Diseño moderno y escalable
+
+Arquitectura del proyecto:
+
+El proyecto sigue una estructura modular:
+
+client/
+ ├── src/
+ │    ├── api/
+ │    ├── assets/
+ │    ├── components/
+ │    ├── context/
+ │    ├── hooks/
+ │    ├── pages/
+ │    ├── services/
+ │    ├── types/
+ │    └── utils/
+
+La gestión global del estado se realiza mediante Context API.
+
+Base de datos:
+
+La aplicación utiliza Supabase con PostgreSQL.
+
+Tablas principales:
+
+profiles
+exercises
+exercises_templates
+sessions
+session_sets
+rms
+friendships
+
+Variables de entorno:
+
+Frontend (.env.local)
+
+VITE_SUPABASE_URL=your_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_key
+
+Instalación local:
+Frontend:
 
 cd client
 npm install
 npm run dev
 
-El frontend se ejecutará normalmente en:
+Backend:
+npm install
+npm run dev
 
-http://localhost:5173
+Mejoras implementadas recientemente:
 
-Si el puerto está ocupado, Vite puede usar otro, por ejemplo:
+Sistema de autenticación con Supabase
+Persistencia real en la nube
+Importación de ejercicios base
+Imágenes en ejercicios
+Modo oscuro
+Edición de sesiones
+Repetición de sesiones
+Asociación automática de RM
+Integración completa con Supabase
 
-http://localhost:5174
-Variable de entorno del frontend
+Mejoras futuras:
 
-En producción se utiliza la variable:
+Corto plazo:
+Agrupar múltiples ejercicios en una misma sesión diaria
+Sistema de check para marcar series completadas
+Mejoras visuales en historial
+Estadísticas de progreso
 
-VITE_API_BASE_URL
-
-Con el valor:
-
-https://gymlog-api-5yup.onrender.com/api/v1
-Documentación
-
-La documentación del proyecto está en la carpeta docs/.
-
-Incluye:
-
-investigación Agile
-idea del proyecto
-gestión del proyecto
-arquitectura
-componentes
-hooks
-context
-rutas
-formularios
-API
-cliente de API
-testing
-despliegue
-Limitaciones actuales
-
-Actualmente el backend guarda los datos en memoria. Esto significa que los datos nuevos pueden perderse si el servidor se reinicia.
-
-Como mejora futura se podría añadir una base de datos real como Supabase, MongoDB o Firebase.
-
-Mejoras futuras
-Autenticación de usuarios
-Base de datos real
+Medio plazo:
 Sistema de amigos
 Comparación de marcas
-Rutinas compartidas
-Gráficos avanzados de progreso
-Integración con una API externa de ejercicios
+Compartir rutinas
+Feed social
+
+Largo plazo:
+Aplicación móvil
+Notificaciones
+IA para recomendaciones de entrenamiento
+Estadísticas avanzadas
+Sincronización en tiempo real
+
+Objetivo técnico del proyecto:
+
+El proyecto no solo busca cumplir objetivos académicos, sino simular una aplicación real escalable, moderna y preparada para evolucionar hacia un producto profesional.
+
 Autor
 
-Proyecto realizado como práctica del grado de Desarrollo de Aplicaciones Multiplataforma por Raúl Antonio Martín Amores
+Raúl A. Martín Amores
 
-Trello: https://trello.com/invite/b/69edf0b2980464ab42ede459/ATTI0671917e8391d0fc3172fb0b6bb98d7d0F411BC4/gymlog-desarrollo
-
-Vercel: https://gymlog-sage.vercel.app/
-
-Render: https://gymlog-api-5yup.onrender.com
+Proyecto Final DAM - GymLog
